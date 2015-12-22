@@ -3,7 +3,7 @@ class ReservationsController < ApplicationController
   before_action :set_table, only: [:assign]
 
   def index
-    @reservations = Reservation.all
+    @reservations = Reservation.where(table: nil).order(time: :asc)
   end
 
   def show

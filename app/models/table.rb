@@ -21,7 +21,7 @@ class Table < ActiveRecord::Base
     table_audits = reservation_table_audits
     if table_audits.last.to != "free"
       reservation_id = reservation_table_audits.last.reservation_id
-      table_audits = ReservationTableAudit.where.not(reservation_id: reservation_id)
+      table_audits = reservation_table_audits.where.not(reservation_id: reservation_id)
     end
 
     reservation_ids = table_audits.pluck(:reservation_id).uniq
@@ -37,11 +37,11 @@ class Table < ActiveRecord::Base
 
   def remaining_time
     return @remaining_time if @remaining_time.present?
-
+    return 0 if self.status == "free"
     return 60 if reservation_table_audits.empty?
 
     seconds = Time.current - reservation_table_audits.first.created_at
-    @remaining_time ||= to_minutes(average_stay_time - seconds)
+    @remaining_time ||= average_stay_time - to_minutes(seconds)
   end
 
   private

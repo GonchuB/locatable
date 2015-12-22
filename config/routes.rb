@@ -9,5 +9,8 @@ Rails.application.routes.draw do
     member do
       put "change_status"
     end
+    collection do
+      get "next_tables"
+    end
   end
 end

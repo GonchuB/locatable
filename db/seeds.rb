@@ -15,13 +15,13 @@ Reservation.first(Table.count).each_with_index do |reservation, index|
 end
 
 Timecop.travel(35.minutes.since) do
-  Table.last.change_status("asked_for_check")
+  Table.last.change_status(Table::STATUS_ASKED_FOR_CHECK)
 end
 
 Timecop.travel(40.minutes.since) do
-  Table.first.change_status("asked_for_check")
+  Table.first.change_status(Table::STATUS_ASKED_FOR_CHECK)
 end
 
 Timecop.travel(45.minutes.since) do
-  Table.first.change_status("free")
+  Table.first.change_status(Table::STATUS_FREE)
 end

@@ -30,7 +30,7 @@ class TablesController < ApplicationController
   def next_table(capacity)
     tables = Table.where(capacity: capacity)
 
-    if table = tables.find_by(status: "free")
+    if table = tables.find_by(status: Table::STATUS_FREE)
       table
     else
       tables.sort { |a, b| a.remaining_time <=> b.remaining_time }.first

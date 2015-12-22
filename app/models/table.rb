@@ -2,6 +2,7 @@ class Table < ActiveRecord::Base
   has_many :reservation_table_audits
 
   STATUSES = %w[free asked_for_check assigned]
+  STATUS_FREE, STATUS_ASKED_FOR_CHECK, STATUS_ASSIGNED = STATUSES
 
   validates :status, inclusion: STATUSES
 
@@ -19,7 +20,7 @@ class Table < ActiveRecord::Base
     return 60 if reservation_table_audits.empty?
 
     table_audits = reservation_table_audits
-    if table_audits.last.to != "free"
+    if table_audits.last.to != Table::STATUS_FREE
       reservation_id = reservation_table_audits.last.reservation_id
       table_audits = reservation_table_audits.where.not(reservation_id: reservation_id)
     end
@@ -37,7 +38,7 @@ class Table < ActiveRecord::Base
 
   def remaining_time
     return @remaining_time if @remaining_time.present?
-    return 0 if self.status == "free"
+    return 0 if self.status == Table::STATUS_FREE
     return 60 if reservation_table_audits.empty?
 
     seconds = Time.current - reservation_table_audits.first.created_at

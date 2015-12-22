@@ -1,12 +1,5 @@
-class AverageStayTimeService
-  attr_accessor :table, :audits
-
-  DEFAULT_STAY_TIME = 60
-
-  def initialize(table)
-    @table  = table
-    @audits = table.reservation_table_audits || Table.none
-  end
+class AverageStayTimeService < TableBaseService
+  DEFAULT_STAY_TIME = 3600
 
   def call
     return DEFAULT_STAY_TIME if audits.empty?

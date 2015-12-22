@@ -1,4 +1,4 @@
-json.extract! @reservation, :id, :name, :diners, :time, :table, :suggestion
+json.extract! @reservation, :id, :name, :diners, :time
 
 if @reservation.table.present?
   json.set! :table do

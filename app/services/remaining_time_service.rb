@@ -1,12 +1,5 @@
-class RemainingTimeService
-  attr_accessor :table, :audits
-
-  DEFAULT_REMAINING_TIME = 60
-
-  def initialize(table)
-    @table  = table
-    @audits = table.reservation_table_audits || Table.none
-  end
+class RemainingTimeService < TableBaseService
+  DEFAULT_REMAINING_TIME = 3600
 
   def call
     return 0 if table.status == Table::STATUS_FREE

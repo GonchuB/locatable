@@ -7,11 +7,7 @@ class Table < ActiveRecord::Base
   validates :status, inclusion: STATUSES
 
   def change_status(new_status)
-    last_audit = self.reservation_table_audits.last
-    return if last_audit.to == new_status
-
-    self.reservation_table_audits.create(reservation: last_audit.reservation, from: last_audit.to, to: new_status)
-    self.update_attributes(status: new_status)
+    TableStatusChangeService.new(self).call(new_status)
   end
 
   def average_stay_time

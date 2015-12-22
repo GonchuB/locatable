@@ -6,6 +6,10 @@ class Table < ActiveRecord::Base
 
   validates :status, inclusion: STATUSES
 
+  def self.unique_capacities
+    pluck(:capacity).uniq
+  end
+
   def change_status(new_status)
     TableStatusChangeService.new(self).call(new_status)
   end

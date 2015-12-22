@@ -1,1 +1,1 @@
-json.extract! @reservation, :id, :name, :diners, :time, :table
+json.extract! @reservation, :id, :name, :diners, :time, :table, :suggestion

@@ -2,7 +2,7 @@ class Table < ActiveRecord::Base
   has_many :reservation_table_audits
 
   def status
-    self.reservation_table_audits.last.to
+    self.reservation_table_audits.last.try(:to) || "free"
   end
 
   def change_status(new_status)

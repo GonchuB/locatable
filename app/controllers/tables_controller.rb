@@ -2,7 +2,7 @@ class TablesController < ApplicationController
   before_action :set_table, only: [:show, :change_status]
 
   def index
-    @tables = Table.all
+    @tables = Table.all.sort { |a, b| a.remaining_time <=> b.remaining_time }
   end
 
   def show

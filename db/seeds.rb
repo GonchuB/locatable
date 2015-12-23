@@ -25,11 +25,38 @@ Table.find_each do |table|
   end
 end
 
-6.times do
+3.times do
   1.upto(3) do |n|
     time   = n.hours.since.at_beginning_of_hour
     name   = Forgery("name").first_name + " " + Forgery("name").last_name.first + "."
     diners = Forgery(:basic).number(at_least: Table.minimum(:capacity), at_most: Table.maximum(:capacity))
     Reservation.create(diners: diners, time: time, name: name)
+  end
+end
+
+Table.first(16).each do |table|
+  time = 1.hour.ago.beginning_of_hour
+  name = Forgery("name").first_name + " " + Forgery("name").last_name.first + "."
+  reservation = Reservation.create(diners: table.capacity, time: time, name: name)
+
+  time_to_assign = Forgery(:basic).number(at_least: 1, at_most: 10).minutes
+  Timecop.travel(time + time_to_assign) do
+    reservation.assign(table)
+  end
+end
+
+Table.last(16).each do |table|
+  time = Time.current.beginning_of_hour
+  name = Forgery("name").first_name + " " + Forgery("name").last_name.first + "."
+  reservation = Reservation.create(diners: table.capacity, time: time, name: name)
+
+  time_to_assign = Forgery(:basic).number(at_least: 1, at_most: 10).minutes
+  Timecop.travel(time + time_to_assign) do
+    reservation.assign(table)
+  end
+
+  time_for_check = Forgery(:basic).number(at_least: 30, at_most: 90).minutes
+  Timecop.travel(time + time_for_check) do
+    table.change_status(Table::STATUS_ASKED_FOR_CHECK)
   end
 end

@@ -10,7 +10,7 @@ class ReservationsController < ApplicationController
   end
 
   def create
-    @reservation = Reservation.create(reservation_params)
+    @reservation = ReservationCreateService.new.call(reservation_params)
     render :show
   end
 

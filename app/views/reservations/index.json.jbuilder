@@ -1,5 +1,5 @@
 json.array!(@reservations) do |reservation|
-  json.extract! reservation, :id, :name, :diners, :time
+  json.extract! reservation, :id, :name, :diners, :time, :wait_time
 
   if reservation.table.present?
     json.set! :table do

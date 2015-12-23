@@ -24,3 +24,12 @@ Table.find_each do |table|
     table.change_status(Table::STATUS_FREE)
   end
 end
+
+6.times do
+  1.upto(3) do |n|
+    time   = n.hours.since.at_beginning_of_hour
+    name   = Forgery("name").first_name + " " + Forgery("name").last_name.first + "."
+    diners = Forgery(:basic).number(at_least: Table.minimum(:capacity), at_most: Table.maximum(:capacity))
+    Reservation.create(diners: diners, time: time, name: name)
+  end
+end

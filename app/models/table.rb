@@ -20,7 +20,6 @@ class Table < ActiveRecord::Base
 
   def average_stay_time
     if self.average_stay_time_updated_at.blank? || self.average_stay_time_updated_at < 1.hour.ago
-      binding.pry
       average_time = AverageStayTimeService.new(self).call / 1.minute
       self.update_attributes(average_stay_time_cache: average_time, average_stay_time_updated_at: Time.current)
     end

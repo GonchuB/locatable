@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  resources :reservations, only: [:index, :show, :destroy] do
+  resources :reservations, only: [:index, :show, :create, :destroy] do
     member do
       put "assign"
     end

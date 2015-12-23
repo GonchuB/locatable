@@ -9,6 +9,11 @@ class ReservationsController < ApplicationController
   def show
   end
 
+  def create
+    @reservation = Reservation.create(reservation_params)
+    render :show
+  end
+
   def destroy
     @reservation.destroy
     render :show
@@ -27,5 +32,9 @@ class ReservationsController < ApplicationController
 
   def set_table
     @table ||= Table.find(params[:table_id])
+  end
+
+  def reservation_params
+    params.require(:reservation).permit(:time, :diners, :name)
   end
 end

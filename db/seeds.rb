@@ -4,25 +4,26 @@
   end
 end
 
+def minutes_until_assign(since)
+  since + Forgery(:basic).number(at_least: 1, at_most: 10).minutes
+end
+
+def minutes_until_check(since)
+  minutes_until_assign(since) + Forgery(:basic).number(at_least: 30, at_most: 90).minutes
+end
+
+def minutes_until_free(since)
+  minutes_until_check(since) + Forgery(:basic).number(at_least: 10, at_most: 30).minutes
+end
+
 Table.find_each do |table|
   time = Forgery(:basic).number(at_least: 1, at_most: 10).hours.ago.at_beginning_of_hour
   name = Forgery("name").first_name + " " + Forgery("name").last_name.first + "."
   reservation = Reservation.create(diners: table.capacity, time: time, name: name)
 
-  time_to_assign = Forgery(:basic).number(at_least: 1, at_most: 10).minutes
-  Timecop.travel(time + time_to_assign) do
-    reservation.assign(table)
-  end
-
-  time_for_check = Forgery(:basic).number(at_least: 30, at_most: 90).minutes
-  Timecop.travel(time + time_for_check) do
-    table.change_status(Table::STATUS_ASKED_FOR_CHECK)
-  end
-
-  time_to_leave = Forgery(:basic).number(at_least: 10, at_most: 30).minutes
-  Timecop.travel(time + time_for_check + time_to_leave) do
-    table.change_status(Table::STATUS_FREE)
-  end
+  Timecop.travel(minutes_until_assign(time)) { reservation.assign(table) }
+  Timecop.travel(minutes_until_check(time)) { table.change_status(Table::STATUS_ASKED_FOR_CHECK) }
+  Timecop.travel(minutes_until_free(time)) { table.change_status(Table::STATUS_FREE) }
 end
 
 3.times do
@@ -39,10 +40,7 @@ Table.first(16).each do |table|
   name = Forgery("name").first_name + " " + Forgery("name").last_name.first + "."
   reservation = Reservation.create(diners: table.capacity, time: time, name: name)
 
-  time_to_assign = Forgery(:basic).number(at_least: 1, at_most: 10).minutes
-  Timecop.travel(time + time_to_assign) do
-    reservation.assign(table)
-  end
+  Timecop.travel(minutes_until_assign(time)) { reservation.assign(table) }
 end
 
 Table.last(16).each do |table|
@@ -50,13 +48,6 @@ Table.last(16).each do |table|
   name = Forgery("name").first_name + " " + Forgery("name").last_name.first + "."
   reservation = Reservation.create(diners: table.capacity, time: time, name: name)
 
-  time_to_assign = Forgery(:basic).number(at_least: 1, at_most: 10).minutes
-  Timecop.travel(time + time_to_assign) do
-    reservation.assign(table)
-  end
-
-  time_for_check = Forgery(:basic).number(at_least: 30, at_most: 90).minutes
-  Timecop.travel(time + time_for_check) do
-    table.change_status(Table::STATUS_ASKED_FOR_CHECK)
-  end
+  Timecop.travel(minutes_until_assign(time)) { reservation.assign(table) }
+  Timecop.travel(minutes_until_check(time)) { table.change_status(Table::STATUS_ASKED_FOR_CHECK) }
 end

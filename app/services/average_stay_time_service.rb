@@ -14,6 +14,8 @@ class AverageStayTimeService < TableBaseService
 
       if table_duration > MAX_STAY_TIME
         memo + MAX_STAY_TIME
+      elsif table_duration < 15.minutes
+        memo + DEFAULT_STAY_TIME
       else
         memo + table_duration
       end

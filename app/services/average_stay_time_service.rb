@@ -9,8 +9,8 @@ class AverageStayTimeService < TableBaseService
     return DEFAULT_STAY_TIME if completed_ids.empty?
 
     reservations_duration = completed_ids.inject(0) do |memo, reservation_id|
-      @audits = audits.where(reservation_id: reservation_id)
-      table_duration = audits.last.created_at - audits.first.created_at
+      reservation_audits = audits.where(reservation_id: reservation_id)
+      table_duration = reservation_audits.last.created_at - reservation_audits.first.created_at
 
       if table_duration > MAX_STAY_TIME
         memo + MAX_STAY_TIME

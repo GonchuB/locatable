@@ -4,6 +4,10 @@ class Table < ActiveRecord::Base
   STATUSES = %w[free asked_for_check assigned]
   STATUS_FREE, STATUS_ASKED_FOR_CHECK, STATUS_ASSIGNED = STATUSES
 
+  scope :free, -> { where(status: STATUS_FREE) }
+  scope :asked_for_check, -> { where(status: STATUS_ASKED_FOR_CHECK) }
+  scope :assigned, -> { where(status: STATUS_ASSIGNED) }
+
   validates :status, inclusion: STATUSES
 
   def self.unique_capacities

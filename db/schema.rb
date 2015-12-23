@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151222170321) do
+ActiveRecord::Schema.define(version: 20151223174522) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -42,9 +42,11 @@ ActiveRecord::Schema.define(version: 20151222170321) do
   create_table "tables", force: :cascade do |t|
     t.integer  "capacity"
     t.integer  "code"
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
-    t.string   "status",     default: "free"
+    t.datetime "created_at",                                    null: false
+    t.datetime "updated_at",                                    null: false
+    t.string   "status",                       default: "free"
+    t.integer  "average_stay_time_cache"
+    t.datetime "average_stay_time_updated_at"
   end
 
   add_foreign_key "reservation_table_audits", "reservations"

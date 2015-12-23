@@ -10,6 +10,7 @@ Rails.application.routes.draw do
       put "change_status"
     end
     collection do
+      get "floor_usage"
       get "next_tables"
       get "average_stay_times"
     end

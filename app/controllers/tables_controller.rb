@@ -21,6 +21,10 @@ class TablesController < ApplicationController
     @average_times = AverageTableTimesService.new.call
   end
 
+  def floor_usage
+    @usage = FloorUsageService.new.call
+  end
+
   private
 
   def set_table

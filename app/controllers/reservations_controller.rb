@@ -3,7 +3,7 @@ class ReservationsController < ApplicationController
   before_action :set_table, only: [:assign]
 
   def index
-    @reservations = Reservation.without_table.order(time: :asc)
+    @reservations = Reservation.without_table.order(time: :asc).sort { |a, b| b.wait_time <=> a.wait_time }
   end
 
   def show

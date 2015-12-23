@@ -11,6 +11,7 @@ Rails.application.routes.draw do
     end
     collection do
       get "next_tables"
+      get "average_stay_times"
     end
   end
 end

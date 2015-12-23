@@ -17,6 +17,10 @@ class TablesController < ApplicationController
     @next_tables = NextTablesService.new.call
   end
 
+  def average_stay_times
+    @average_times = AverageTableTimesService.new.call
+  end
+
   private
 
   def set_table
